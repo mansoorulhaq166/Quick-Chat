@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Quick Chat</string>
+    <string name="url">http://192.168.43.231/ChatAppApis/</string>
+
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button_text">Log In</string>
+    <string name="create_account">Create account</string>
+
+    <string name="error">Field is required</string>
+    <string name="message_error">Enter your message here!</string>
+    <string name="err_email">Email is not Valid</string>
+    <string name="err_name">Name is required</string>
+    <string name="err_password">At least 8 characters</string>
+    <string name="err_mobile">Mobile Number not valid</string>
+    <string name="err_password_mismatch">Password mismatch</string>
+    <string name="def_status">Hey, there! I am using this Chat Application</string>
+
+    <!-- Activity Register -->
+    <string name="register_page_title">Welcome!</string>
+    <string name="register_page_subtitle">Create your account to start!</string>
+    <string name="register_olg_member">Already registered ?</string>
+    <string name="register_button">Register</string>
+    <string name="register_continue_with">- Or Register with -</string>
+    <string name="no_account_sign_up">Sign Up!</string>
+
+    <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_email_hint">Enter your email</string>
+    <string name="forgot_password_email_title">Email</string>
+    <string name="forgot_password_button">Send Reset Code</string>
+    <string name="forgot_password_back">Back To Login</string>
+    <string name="forgot_password_enter_code">Enter Your Reset Code</string>
+    <string name="forgot_password_code">Reset Code Verification</string>
+    <string name="forgot_password_code_verify">Verify</string>
+    <string name="change_password_title">Choose a New Password</string>
+    <string name="change_password_enter_pass">Enter New Password</string>
+    <string name="change_password_confirm_pass">Confirm New Password</string>
+    <string name="save">Save New Password</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+</resources>
