@@ -1,10 +1,15 @@
 package com.example.quickchat.Activities;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +22,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -26,17 +32,11 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
-import com.example.quickchat.ApiController;
-import com.example.quickchat.Models.Signup_rep_model;
+import com.example.quickchat.Retrofit.ApiController;
+import com.example.quickchat.Models.Signup_resp;
 import com.example.quickchat.R;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
-
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,6 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
     Bitmap bitmap;
     private static Bitmap defaultBitmap;
     private static String defaultEncodedImageString;
+    SharedPreferences sharedPreferences;
     Uri imageUri;
     String encodedImageString;
     //   String regexPassword = ".{8,8}";
@@ -63,7 +64,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        sharedPreferences = getSharedPreferences("credentials", MODE_PRIVATE);
         // encoding defaultImage
         defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile_image);
         CompressImage compressImage = new CompressImage(defaultBitmap, getResources());
@@ -98,27 +101,6 @@ public class RegisterActivity extends AppCompatActivity {
             startActivity(login_Activity);
         });
 
-        profileImage.setOnClickListener(view -> Dexter.withActivity(RegisterActivity.this)
-                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        Intent intent = new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                        permissionToken.continuePermissionRequest();
-                    }
-                }).check());
-
         regSubmit.setOnClickListener(view -> {
             if (mAwesomeValidation.validate()) {
                 progressBar.setVisibility(View.VISIBLE);
@@ -133,6 +115,15 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                selectImageLauncher.launch("image/*");
+            }
+        });
     }
 
     private void registerUser(String name, String email, String mobile, String password, String status) {
@@ -140,16 +131,20 @@ public class RegisterActivity extends AppCompatActivity {
         if (encodedImageString == null) {
             encodedImageString = defaultEncodedImageString;
         }
-        Call<Signup_rep_model> call = ApiController.getInstance().getApi()
+        Call<Signup_resp> call = ApiController.getInstance().getApi()
                 .getRegister(name, email, encodedImageString, mobile, password, status);
-        call.enqueue(new Callback<Signup_rep_model>() {
+        call.enqueue(new Callback<Signup_resp>() {
             @Override
-            public void onResponse(@NonNull Call<Signup_rep_model> call, @NonNull Response<Signup_rep_model> response) {
-                Signup_rep_model repModel = response.body();
+            public void onResponse(@NonNull Call<Signup_resp> call, @NonNull Response<Signup_resp> response) {
+                Signup_resp repModel = response.body();
                 assert repModel != null;
                 String result = repModel.getMessage().trim();
                 switch (result) {
                     case "registered":
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("user", email);
+                        editor.putString("password", password);
+                        editor.apply();
                         progressBar.setVisibility(View.GONE);
                         regSubmit.setVisibility(View.VISIBLE);
                         Toast.makeText(RegisterActivity.this, "Successfully Registered", Toast.LENGTH_SHORT).show();
@@ -184,30 +179,30 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Signup_rep_model> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Signup_resp> call, @NonNull Throwable t) {
                 Log.e("myerror", "onFailure: " + t.getMessage());
                 Toast.makeText(RegisterActivity.this, "Failure: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE) {
-                imageUri = data.getData();
-                try {
-                    InputStream inputStream = getContentResolver().openInputStream(imageUri);
-                    bitmap = BitmapFactory.decodeStream(inputStream);
-                    profileImage.setImageBitmap(bitmap);
-                    encodeBitmapImage(bitmap);
-                } catch (Exception e) {
-                    e.printStackTrace();
+    private final ActivityResultLauncher<String> selectImageLauncher = registerForActivityResult(
+            new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    if (uri != null) {
+                        imageUri = uri;
+                        //   profileImage.setImageURI(uri);
+                        try {
+                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                            bitmap = BitmapFactory.decodeStream(inputStream);
+                            profileImage.setImageBitmap(bitmap);
+                            encodeBitmapImage(bitmap);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
-            }
-        }
-    }
+            });
 
     private void encodeBitmapImage(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

@@ -1,10 +1,11 @@
 package com.example.quickchat.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -15,6 +16,7 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -24,9 +26,12 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
-import com.example.quickchat.ApiController;
-import com.example.quickchat.Models.Login_rep_model;
+import com.example.quickchat.Models.Users;
+import com.example.quickchat.Retrofit.ApiController;
+import com.example.quickchat.Models.Login_resp;
 import com.example.quickchat.R;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,12 +44,16 @@ public class LoginActivity extends AppCompatActivity {
     EditText TextEmail, TextPassword;
     Button login;
     ProgressBar progressBar;
+    SharedPreferences sharedPreferences;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        verifyUserExistence();
 
         forgotPassword = (TextView) findViewById(R.id.forgot_password);
         signUp = (TextView) findViewById(R.id.sign_up);
@@ -101,20 +110,24 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void userLogin(String email, String password) {
-        Call<Login_rep_model> call = ApiController.getInstance().getApi()
+        Call<Login_resp> call = ApiController.getInstance().getApi()
                 .getLogin(email, password);
-        call.enqueue(new Callback<Login_rep_model>() {
+        call.enqueue(new Callback<Login_resp>() {
             @Override
-            public void onResponse(Call<Login_rep_model> call, Response<Login_rep_model> response) {
-                Login_rep_model rep_model = response.body();
+            public void onResponse(@NonNull Call<Login_resp> call, @NonNull Response<Login_resp> response) {
+                Login_resp rep_model = response.body();
                 assert rep_model != null;
                 String result = rep_model.getMessage().trim();
-
                 if (result.equals("success")) {
+                    sharedPreferences = getSharedPreferences("credentials", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("user", email);
+                    editor.putString("password", password);
+                    editor.apply();
+
                     progressBar.setVisibility(View.GONE);
                     login.setVisibility(View.VISIBLE);
                     TextEmail.setText("");
@@ -132,10 +145,16 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Login_rep_model> call, Throwable t) {
+            public void onFailure(Call<Login_resp> call, Throwable t) {
                 Log.e("myerror", "onFailure: " + t.getMessage());
-                Toast.makeText(LoginActivity.this, "Failure: "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Failure: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void verifyUserExistence() {
+        sharedPreferences = getSharedPreferences("credentials", MODE_PRIVATE);
+        if (sharedPreferences.contains("user")) {
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        }
     }
 }

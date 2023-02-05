@@ -1,4 +1,4 @@
-package com.example.quickchat;
+package com.example.quickchat.Retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,7 +13,6 @@ public class ApiController {
     private static Retrofit retrofit;
 
     public ApiController() {
-
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();

@@ -1,12 +1,12 @@
 package com.example.quickchat.Models;
 
-public class Signup_rep_model {
+public class Signup_resp {
     String message;
 
-    public Signup_rep_model() {
+    public Signup_resp() {
     }
 
-    public Signup_rep_model(String message) {
+    public Signup_resp(String message) {
         this.message = message;
     }
 
