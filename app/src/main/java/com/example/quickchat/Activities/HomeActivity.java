@@ -37,6 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     private SwipeRefreshLayout refreshLayout;
     UsersAdapter usersAdapter;
+    public static String sendImage;
     RecyclerView recyclerView;
     ArrayList<Users> usersArrayList;
 
@@ -56,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar1);
         toolbar.setTitle("Home");
         setSupportActionBar(toolbar);
-       // Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        // Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         // fetching user data from server
         processData();
@@ -87,6 +88,11 @@ public class HomeActivity extends AppCompatActivity {
 
                     // removing current user from layout
                     Users currentUser = getCrntUser();
+
+                    // profile pic for chat activity
+                    if (currentUser != null) {
+                        sendImage = currentUser.getProfile_pic();
+                    }
                     usersArrayList.remove(currentUser);
 
                     usersAdapter = new UsersAdapter(usersArrayList, HomeActivity.this);
@@ -105,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     // getting Current User
-    private Users getCrntUser() {
+    public Users getCrntUser() {
         String currentUserEmail = getSharedPreferences("credentials", MODE_PRIVATE)
                 .getString("user", "");
         for (Users user1 : usersArrayList) {

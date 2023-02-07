@@ -1,6 +1,8 @@
 package com.example.quickchat.Retrofit;
 
 import com.example.quickchat.Models.Login_resp;
+import com.example.quickchat.Models.Messages;
+import com.example.quickchat.Models.Save_msg_resp;
 import com.example.quickchat.Models.Signup_resp;
 import com.example.quickchat.Models.Users;
 
@@ -12,6 +14,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiSet {
 
@@ -33,6 +36,17 @@ public interface ApiSet {
             @Field("password") String password
     );
 
+    @FormUrlEncoded
+    @POST("save_message.php")
+    Call<Save_msg_resp> saveMsgs(
+            @Field("message") String message,
+            @Field("sender_email") String currentUserEmail,
+            @Field("receiver_email") String receivedEmail
+    );
+
     @GET("users.php")
     Call<ArrayList<Users>> getUsers();
+
+    @GET("get_msg.php")
+    Call<ArrayList<Messages>> getMessages();
 }

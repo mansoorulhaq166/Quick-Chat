@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/dark_grey"
-        android:padding="4dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="2dp">
 
         <ImageView
             android:id="@+id/chat_back"
@@ -25,8 +25,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chat_profile_image"
-            android:layout_width="80dp"
-            android:layout_height="65dp"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="8dp"
             android:padding="2dp"
             android:src="@drawable/person_24" />
@@ -39,17 +39,16 @@
             android:fontFamily="@font/poppinsregular"
             android:text="User Name"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/message_ll"
-        android:layout_below="@id/chat_ll"
-        android:layout_margin="5dp" />
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/message_ll"
+            android:layout_below="@id/chat_ll"
+            android:layout_margin="5dp"
+            />
     <LinearLayout
         android:id="@+id/message_ll"
         android:layout_width="match_parent"
@@ -65,7 +64,7 @@
             android:layout_weight="1"
             android:background="@drawable/message_text_bg"
             android:hint="Type your message..."
-            android:paddingLeft="8dp"
+            android:paddingLeft="22dp"
             android:paddingRight="8dp"
             android:textColor="@color/white"
             android:textColorHint="#66ffffff"
