@@ -1,10 +1,5 @@
 package com.example.quickchat.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,7 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.airbnb.lottie.L;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
@@ -65,11 +64,10 @@ public class ChatActivity extends AppCompatActivity {
         messageButton = findViewById(R.id.message_button);
         button_back = findViewById(R.id.chat_back);
         messageRecycler = findViewById(R.id.chat_recyclerView);
-
         messagesArrayList = new ArrayList<>();
 
-          ChatsAdapter chatsAdapter = new ChatsAdapter(messagesArrayList, ChatActivity.this);
-          messageRecycler.setAdapter(chatsAdapter);
+        ChatsAdapter chatsAdapter = new ChatsAdapter(messagesArrayList, ChatActivity.this);
+        messageRecycler.setAdapter(chatsAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
         linearLayoutManager.setStackFromEnd(true);
@@ -102,6 +100,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (awesomeValidation.validate()) {
+                    // checking seen status
                     message = messageText.getText().toString();
                     currentUserEmail = getSharedPreferences("credentials", MODE_PRIVATE)
                             .getString("user", "");
@@ -192,4 +191,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

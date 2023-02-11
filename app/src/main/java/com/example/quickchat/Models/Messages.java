@@ -1,10 +1,11 @@
 package com.example.quickchat.Models;
 
 public class Messages {
-    String id;
+    String message_id;
     String sender_email;
     String receiver_email;
     String message;
+    int seen_status;
     long time_stamp;
 
     public Messages() {
@@ -19,12 +20,30 @@ public class Messages {
         this.message = message;
     }
 
-    public Messages(String id, String sender_email, String receiver_email, String message, long time_stamp) {
-        this.id = id;
+    public Messages(String message_id, String sender_email, String receiver_email,
+                    String message, int seen_status, long time_stamp) {
+        this.message_id = message_id;
         this.sender_email = sender_email;
         this.receiver_email = receiver_email;
         this.message = message;
+        this.seen_status = seen_status;
         this.time_stamp = time_stamp;
+    }
+
+    public String getMessage_id() {
+        return message_id;
+    }
+
+    public void setMessage_id(String message_id) {
+        this.message_id = message_id;
+    }
+
+    public int getSeen_status() {
+        return seen_status;
+    }
+
+    public void setSeen_status(int seen_status) {
+        this.seen_status = seen_status;
     }
 
     public String getMessage() {
@@ -35,13 +54,6 @@ public class Messages {
         this.message = message;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getSender_email() {
         return sender_email;

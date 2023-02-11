@@ -9,6 +9,14 @@
         <item name="android:windowBackground">@color/grey_light</item>
     </style>
 
+    <style name="MyToolbarStyle" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/grey</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="overlapAnchor">false</item>
+        <item name="android:windowDisablePreview">true</item>
+      <!--  <item name="android:dropDownVerticalOffset">5.0dp</item> -->
+    </style>
+
     <style name="Dialog">
         <item name="android:windowBackground">@drawable/empty_bg</item>
         <item name="windowNoTitle">true</item>

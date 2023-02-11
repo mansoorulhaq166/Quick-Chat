@@ -20,7 +20,6 @@ $message = $_POST['message'];
 $sql = "INSERT INTO tbl_msgs(sender_email, receiver_email, message)
     VALUES ('$sender_email', '$receiver_email', '$message')";
 
-
 if (mysqli_query($conn, $sql)) {
     $response['status'] = "success";
    // echo json_encode(array("status" => "success"));

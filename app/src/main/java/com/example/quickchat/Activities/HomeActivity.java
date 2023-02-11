@@ -1,16 +1,13 @@
 package com.example.quickchat.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,26 +17,36 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.quickchat.Adapters.UsersAdapter;
-import com.example.quickchat.Retrofit.ApiController;
 import com.example.quickchat.Models.Users;
 import com.example.quickchat.R;
+import com.example.quickchat.Retrofit.ApiController;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
+import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     SharedPreferences sharedPreferences;
     private SwipeRefreshLayout refreshLayout;
     UsersAdapter usersAdapter;
     public static String sendImage;
+    public static String loggedUser;
     RecyclerView recyclerView;
     ArrayList<Users> usersArrayList;
+    private static final int RC_Location = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         refreshLayout = findViewById(R.id.swipeControl);
-        sharedPreferences = getSharedPreferences("credentials", MODE_PRIVATE);
+        loggedUser = getSharedPreferences("credentials", MODE_PRIVATE).getString("user", "");
         recyclerView = findViewById(R.id.home_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         usersArrayList = new ArrayList<>();
@@ -131,10 +138,29 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.options_logout) {
-            logout();
-        } else if (item.getItemId() == R.id.options_settings) {
-            startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+        switch (item.getItemId()) {
+            case R.id.options_logout:
+                logout();
+                return true;
+            case R.id.options_settings:
+                startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+                return true;
+            case R.id.navigation_location:
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                } else {
+                    // checking if location permission is granted
+                    if (!EasyPermissions.hasPermissions(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        EasyPermissions.requestPermissions(HomeActivity.this, "This app requires location permission to get your current location.",
+                                RC_Location, Manifest.permission.ACCESS_FINE_LOCATION);
+                    } else {
+                        Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                        return true;
+                    }
+                }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -165,5 +191,20 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        if (requestCode == RC_Location) {
+            Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (requestCode == RC_Location) {
+            Toast.makeText(this, "Location Permission is needed to get your current Location", Toast.LENGTH_SHORT).show();
+        }
     }
 }

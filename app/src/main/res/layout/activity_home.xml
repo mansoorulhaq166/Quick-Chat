@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rl_main"
     android:background="@drawable/background"
     tools:context=".Activities.HomeActivity">
 
@@ -14,7 +15,7 @@
         android:background="@color/dark_grey"
         android:elevation="10dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:popupTheme="@style/MyToolbarStyle"
         app:subtitleTextColor="#ffffff"
         app:titleTextColor="#ffffff" />
 

@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiController {
 
-    static final String url = "http://192.168.43.231/ChatAppApis/";
+    static final String url = "http://192.168.43.231/ChatappApis/";
     private static ApiController clientObject;
     private static Retrofit retrofit;
 

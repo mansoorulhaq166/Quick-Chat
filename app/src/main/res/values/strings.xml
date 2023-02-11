@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Quick Chat</string>
-    <string name="url">http://192.168.43.231/ChatAppApis/</string>
+    <string name="url">http://mansoorulhaq.site/ChatappApis/</string>
+    <string name="local_url">http://192.168.43.231/ChatappApis/</string>
 
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
@@ -45,4 +46,5 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
