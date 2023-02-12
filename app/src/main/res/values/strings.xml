@@ -47,4 +47,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="splash_connection_problem_title">Connection Problem</string>
+    <string name="splash_connection_problem_message">Please verify your internet connection status and retry again.</string>
+    <string name="splash_connection_problem_retry">RETRY</string>
 </resources>

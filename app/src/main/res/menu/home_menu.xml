@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Activities.HomeActivity">
-
-    <item
-        android:id="@+id/options_logout"
-        android:icon="@drawable/logout_24"
-        android:title="Logout"
-        app:showAsAction="always" />
     <item
         android:id="@+id/overflowMenu"
         android:icon="@drawable/ic_baseline_more_vert"

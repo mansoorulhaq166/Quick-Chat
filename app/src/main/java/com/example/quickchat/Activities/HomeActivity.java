@@ -1,41 +1,39 @@
+
 package com.example.quickchat.Activities;
 
-import android.Manifest;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Toast;
+        import android.Manifest;
+        import android.content.Context;
+        import android.content.Intent;
+        import android.content.SharedPreferences;
+        import android.location.LocationManager;
+        import android.os.Bundle;
+        import android.provider.Settings;
+        import android.util.Log;
+        import android.view.Menu;
+        import android.view.MenuInflater;
+        import android.view.MenuItem;
+        import android.view.WindowManager;
+        import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+        import androidx.annotation.NonNull;
+        import androidx.appcompat.app.AppCompatActivity;
+        import androidx.appcompat.widget.Toolbar;
+        import androidx.recyclerview.widget.LinearLayoutManager;
+        import androidx.recyclerview.widget.RecyclerView;
+        import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.quickchat.Adapters.UsersAdapter;
-import com.example.quickchat.Models.Users;
-import com.example.quickchat.R;
-import com.example.quickchat.Retrofit.ApiController;
+        import com.example.quickchat.Adapters.UsersAdapter;
+        import com.example.quickchat.Models.Users;
+        import com.example.quickchat.R;
+        import com.example.quickchat.Retrofit.ApiController;
 
-import java.util.ArrayList;
-import java.util.List;
+        import java.util.ArrayList;
+        import java.util.List;
 
-import pub.devrel.easypermissions.EasyPermissions;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+        import pub.devrel.easypermissions.EasyPermissions;
+        import retrofit2.Call;
+        import retrofit2.Callback;
+        import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
@@ -139,9 +137,6 @@ public class HomeActivity extends AppCompatActivity implements EasyPermissions.P
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.options_logout:
-                logout();
-                return true;
             case R.id.options_settings:
                 startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
                 return true;
@@ -165,33 +160,33 @@ public class HomeActivity extends AppCompatActivity implements EasyPermissions.P
         return super.onOptionsItemSelected(item);
     }
 
-    private void logout() {
-        Dialog dialog = new Dialog(HomeActivity.this, R.style.Dialog);
-        dialog.setContentView(R.layout.dialog_logout);
-
-        Button yes, no;
-
-        yes = dialog.findViewById(R.id.dialog_yes);
-        no = dialog.findViewById(R.id.dialog_no);
-
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.apply();
-                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
+//    private void logout() {
+//        Dialog dialog = new Dialog(SplashActivity.this, R.style.Dialog);
+//        dialog.setContentView(R.layout.dialog_logout);
+//
+//        Button yes, no;
+//
+//        yes = dialog.findViewById(R.id.dialog_yes);
+//        no = dialog.findViewById(R.id.dialog_no);
+//
+//        yes.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.clear();
+//                editor.apply();
+//                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+//                finish();
+//            }
+//        });
+//        no.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dialog.dismiss();
+//            }
+//        });
+//        dialog.show();
+//    }
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {

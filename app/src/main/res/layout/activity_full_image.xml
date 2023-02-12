@@ -19,7 +19,6 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:subtitleTextColor="#ffffff"
         app:titleTextColor="#ffffff" />
-
     <ImageView
         android:id="@+id/clicked_image"
         android:layout_width="match_parent"

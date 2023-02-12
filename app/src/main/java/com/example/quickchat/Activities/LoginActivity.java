@@ -1,8 +1,5 @@
 package com.example.quickchat.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,15 +20,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
-import com.example.quickchat.Models.Users;
-import com.example.quickchat.Retrofit.ApiController;
 import com.example.quickchat.Models.Login_resp;
 import com.example.quickchat.R;
-
-import java.util.ArrayList;
+import com.example.quickchat.Retrofit.ApiController;
 
 import retrofit2.Call;
 import retrofit2.Callback;

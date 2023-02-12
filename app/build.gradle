@@ -33,11 +33,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+   // def apiKey = System.getenv("API_KEY") ?: project.property("API_KEY")
 }
-
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
@@ -53,13 +53,14 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
     // For developers using AndroidX in their applications
-     implementation 'pub.devrel:easypermissions:3.0.0'
+    implementation 'pub.devrel:easypermissions:3.0.0'
     // For developers using the Android Support Library
-     implementation 'pub.devrel:easypermissions:2.0.1'
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.basgeekball:awesome-validation:4.3'
+    implementation "io.getstream:avatarview-coil:1.0.3"
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.airbnb.android:lottie:5.2.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'

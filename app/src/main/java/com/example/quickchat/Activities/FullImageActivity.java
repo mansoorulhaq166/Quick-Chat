@@ -17,7 +17,6 @@ public class FullImageActivity extends AppCompatActivity {
     String receivedClickedImage, receivedClickedName;
     ImageView fullImage;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +34,13 @@ public class FullImageActivity extends AppCompatActivity {
 
         fullImage = findViewById(R.id.clicked_image);
         Picasso.get().load(receivedClickedImage).into(fullImage);
-
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         Intent main = new Intent(FullImageActivity.this, HomeActivity.class);
-      //  main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //  main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(main);
         finish();
         return true;

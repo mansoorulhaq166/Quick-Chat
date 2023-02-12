@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/rl_main"
     android:background="@drawable/background"
-    tools:context=".Activities.HomeActivity">
+    tools:context=".Activities.SplashActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar1"
